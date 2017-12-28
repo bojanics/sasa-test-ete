@@ -119,7 +119,7 @@ function setChosenLanguage()
 {
     applyTranslation();
     if (isUseOutlookMailSettings() && mailboxSettingsAvailable && isSignedInUser()) {
-        patchmailboxsettingsdata("https://graph.microsoft.com/v1.0/me/mailboxSettings", {"language":{"locale":languageSelector.currentLanguage}});
+        patchmailboxsettingsdata("https://graph.microsoft.com/beta/me/mailboxSettings", {"language":{"locale":languageSelector.currentLanguage}});
     }
 }
 

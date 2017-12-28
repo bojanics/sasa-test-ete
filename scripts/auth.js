@@ -299,7 +299,7 @@ function patchdatanoadal(token, url, payload) {
 
 function getuserphotometadata() {
     document.getElementById('userphotomessage').innerHTML="Waiting for user's photo meta data...";
-    executeAjaxRequestWithAdalLogic("https://graph.microsoft.com",getdatanoadalphotometadata,"https://graph.microsoft.com/v1.0/me/photo");
+    executeAjaxRequestWithAdalLogic("https://graph.microsoft.com",getdatanoadalphotometadata,"https://graph.microsoft.com/beta/me/photo");
 }
 
 function getdatanoadalphotometadata(token,url) {
@@ -334,7 +334,7 @@ function getdatanoadalphotometadata(token,url) {
 
 function getuserphoto() {
     document.getElementById('userphotomessage').innerHTML="Waiting for user's photo...";
-    executeAjaxRequestWithAdalLogic("https://graph.microsoft.com",getdatanoadalphoto,"https://graph.microsoft.com/v1.0/me/photo/$value");
+    executeAjaxRequestWithAdalLogic("https://graph.microsoft.com",getdatanoadalphoto,"https://graph.microsoft.com/beta/me/photo/$value");
 }
 
 function getdatanoadalphoto(token,url) {

@@ -154,7 +154,7 @@
                         form.ready.then(function() {
                             // Find out user's mailbox settings
                             if (isUseOutlookMailSettings() && isSignedInUser()) {
-                                getmailboxsettingsdata('https://graph.microsoft.com/v1.0/me/mailboxSettings');
+                                getmailboxsettingsdata('https://graph.microsoft.com/beta/me/mailboxSettings');
                             } else {
                                 // Just translate the page
                                 applyTranslation();
@@ -469,7 +469,7 @@
             </div>
         </div>
 		<div class="content-wrapper">
-            <div id="dataurl">VERSION: 97</div>
+            <div id="dataurl">VERSION: 98</div>
             <div id="mymessage"></div>
             <div id="mailboxsettingsmessage"></div>
             <div id="userphotomessage"></div>
