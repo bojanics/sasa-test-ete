@@ -33,8 +33,8 @@ Logging = {
     // or we are in process of initialization (callback), or if we have the query parameter 'online' equal to 'true'
     var shouldUseADAL = isIfrm || isSignedInUser() || isCallback || qs['online']=='true';
     console.log('should use ADAL: '+shouldUseADAL);
+    alert('suada='+shouldUseADAL);
     if (shouldUseADAL) {
-         console.log('query='+query);
          if (ADAL==null) {
             ADAL = new AuthenticationContext({
                 instance: 'https://login.microsoftonline.com/',
