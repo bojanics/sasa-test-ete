@@ -67,7 +67,7 @@ Logging = {
 
 
 function isADALCallback() {
-   hash = getHash(window.location.hash);
+   var hash = getHash(window.location.hash);
    var parameters = deserializeHash(hash);
    return (
       parameters.hasOwnProperty('error_description') ||
@@ -76,7 +76,7 @@ function isADALCallback() {
    );   
 }
 
-function deserializeHash(hash) {
+function deserializeHash(query) {
    var match,
       pl = /\+/g,  // Regex for replacing addition symbol with a space
       search = /([^&=]+)=([^&]*)/g,
