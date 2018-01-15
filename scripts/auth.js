@@ -41,7 +41,7 @@ Logging = {
     // check and use ADAL if we have signed in user or we need to initialize it
     // NOTE: ADAL should be used if this is running inside iFrame (it means it is refreshing the ID token), or if we already have signed-in user, 
     // or we are in process of initialization (callback), or if we have the query parameter 'online' equal to 'true'
-    var shouldUseADAL = isIfrm || isSignedInUser() || isCallback || (qs['online']=='true' && adal_clientId && adal_tenant);
+    var shouldUseADAL = isIfrm || isSignedInUser() || isCallback || (qs['online']=='true' && adal_clientId!=null && adal_tenant!=null);
     console.log('should use ADAL: '+shouldUseADAL);
     alert('suada='+shouldUseADAL);
     if (shouldUseADAL) {
@@ -134,7 +134,7 @@ function isUseOutlookMailSettings() {
 }
    
 function fillUserInfo() {
-    var signeduser = ADAL.getCachedUser();
+    var signeduser = ADAL!=null ? ADAL.getCachedUser() : null;
     if (signeduser && headerObj !== 'undefined' && headerObj.hasOwnProperty("account") && headerObj["account"]) {
         if (signeduser.profile.upn) {
             // For work or school accounts
