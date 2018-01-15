@@ -2,16 +2,19 @@
     <head>
         <meta charset="utf-8">
         <title>Layout</title>
-        <link href="./ress/gif/greco/GrECo_Logo_CMYK_Vektor.gif" rel="shortcut icon" type="image/x-icon">
+        <link href="./ress/jpeg/risktech/Risktech48.jpg" rel="shortcut icon" type="image/x-icon">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="./ress/css/fabric.min.css">
         <link rel="stylesheet" href="./ress/css/fabric.components.min.css">
         <link id="layoutstyle" href="./ress/css/layout.css" rel="stylesheet">
+        <link id="themelayoutstyle" href="./ress/css/cosmo/layout-override.css" rel="stylesheet">
 		<link href="./ress/css/formio.full.min.css" rel="stylesheet">
 		<script src="./scripts/vendor/formio.full.min.js"></script>
         <script src="./scripts/vendor/jquery-1.10.2.min.js"></script>
         <script src="./scripts/vendor/adal.min.js"></script>
         <script src="./scripts/lang.js"></script>
+        <script src="./scripts/tz.js"></script>
+        <script src="./scripts/theme.js"></script>
         <script src="./scripts/main.js"></script>
         <script src="./scripts/auth.js"></script>
         <script src="./defs/app.json.js"></script>
@@ -147,6 +150,9 @@
                     langObj.hooks = hooksObj;
                     Formio.createForm(document.getElementById('formio'), formObj, langObj)
                     .then(function(form) {
+                        form.header = {
+                            user: currentUser
+                        };
                         window.setLanguage = function (lang) {
                             form.language = lang;
                         };
@@ -155,6 +161,7 @@
                             // Find out user's mailbox settings
                             if (isUseOutlookMailSettings() && isSignedInUser()) {
                                 getmailboxsettingsdata('https://graph.microsoft.com/beta/me/mailboxSettings');
+                                getSupportedTimeZones();
                             } else {
                                 // Just translate the page
                                 applyTranslation();
@@ -201,13 +208,13 @@
                         </button>
                     </div>
                     <div id="mainLogo" class="header-common app-header main-logo visiblesmcommands" style="display: none" onmousedown="return false">
-                        <img src="./ress/gif/greco/GrECo_Logo_CMYK_Vektor.gif" />
+                        <img src="./ress/jpeg/risktech/Risktech48.jpg" />
                     </div>
                     <div id="partnerLogo" class="header-common app-header visiblesmcommands" style="display: none" onmousedown="return false">
-                        <img src="./ress/gif/greco/JLT_partner_white.gif" />
+                        <img />
                     </div>
                     <div id="appTitle" class="header-common app-header rsp-lar-visible" style="display: none">
-                        <p class="app-menu-brand">GOS | WebBase</a>
+                        <p class="app-menu-brand">Risktech APP</a>
                     </div>
                 </div>
                 <div class="header-common header-center"></div>
@@ -278,7 +285,7 @@
                         <button id="accountsCommand" type="button" class="header-common app-menu-button app-menu-button-right app-menu-button-right-menu" onclick="openUserMenu(this)">
                             <div class="app-menu-button-right-menu-wrapper">
                                 <div class="app-menu-button-right-menu-left">
-                                    <span class="username">Vladimir Nikolić - GrECo JLT SSC</span>
+                                    <span class="username">James Smith - Risktech</span>
                                 </div>
                                 <div class="header-common app-header app-menu-button-right-menu-right">
                                     <div class="app-menu-button-right-menu-right-image-wrapper">
@@ -317,6 +324,62 @@
                                         <div>
                                             <div>
                                                 <div>
+                                                    <div id="themeCardWrapper" style="display: none">
+                                                        <div id="themeCard" class="header-common user-settings-card collapsed-card">
+                                                            <div class="header-common user-settings-card-header">
+                                                                <div class="header-common user-settings-card-header-label">
+                                                                    <span lang-tran="Theme">Theme</span>
+                                                                </div>
+                                                                <div class="header-common user-settings-card-header-sublabel">
+                                                                    <div>
+                                                                        <span lang-tran="Choose your favorite theme.">Choose your favorite theme.</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="header-common user-settings-card-value">
+                                                                <div>
+                                                                    <div id="themeValue" class="user-settings-card-value-content">
+                                                                        <a tabindex="0" title="Selected theme: Cosmo">
+                                                                            <div class="current-theme-image-wrapper" title="Selected theme: Cosmo" style="background-color: #005aa1">
+                                                                                <img class="current-theme-image"/>
+                                                                            </div>
+                                                                        </a>
+                                                                        <span class="current-theme-setting">Cosmo</span>
+                                                                    </div>
+                                                                    <div class="header-common user-settings-card-combo-wrapper">
+                                                                        <div role="region">
+                                                                            <div class="theme-list-wrapper">
+                                                                                <div class="theme-list-container">
+                                                                                    <div class="theme-list-scroller-wrappper">
+                                                                                        <div id="themeList">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="header-common user-settings-card-footer">
+                                                                <a id="saveTheme" class="header-common user-settings-button emphasized">
+                                                                    <span lang-tran="Save">Save</span>
+                                                                </a>
+                                                                <a id="cancelTheme" class="header-common user-settings-button">
+                                                                    <span lang-tran="Cancel">Cancel</span>
+                                                                </a>
+                                                            </div>
+                                                            <div>
+                                                                <div class="header-common user-settings-card-collapse-area">
+                                                                    <a id="collapseTheme" class="user-settings-card-collapse-button">
+                                                                        <span class="ms-Icon ms-Icon--chevronUp"></span>
+                                                                    </a>
+                                                                    <div class="user-settings-card-expand-button">
+                                                                        <span class="ms-Icon ms-Icon--chevronDown"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div>
                                                         <div id="LTZCard" class="header-common user-settings-card collapsed-card">
                                                             <div class="header-common user-settings-card-header">
@@ -326,11 +389,11 @@
                                                             </div>
                                                             <div class="header-common user-settings-card-value">
                                                                 <div>
-                                                                    <div id="languageValue">
+                                                                    <div id="languageValue" class="user-settings-card-value-content">
                                                                         <span id="languageName1">English (Internatioanl)&lrm;</span>
                                                                     </div>
                                                                     <div class="header-common user-settings-card-combo-wrapper">
-                                                                        <div>
+                                                                        <div id="languageWrapper" class="user-settings-card-combo-item">
                                                                             <span id="Language" lang-tran="Language">Language</span>
                                                                             <div class="user-settings-card-picker-container">
                                                                                 <button class="user-settings-card-picker-button" onclick="chooseLanguage()">
@@ -338,6 +401,22 @@
                                                                                         <span class="user-settings-card-picker-button-text"></span>
                                                                                         <div>
                                                                                             <span id="languageName2">English (Internatioanl)&lrm;</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="user-settings-card-picker-button-arrow-wrapper">
+                                                                                        <span class="user-settings-card-picker-button-arrow ms-Icon ms-Icon--caretDown"></span>
+                                                                                    </div>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div id="timeZoneWrapper" class="user-settings-card-combo-item" style="display: none">
+                                                                            <span id="Time Zone" lang-tran="Time Zone">Time Zone</span>
+                                                                            <div class="user-settings-card-picker-container">
+                                                                                <button class="user-settings-card-picker-button" onclick="chooseTimeZone()">
+                                                                                    <div class="user-settings-card-picker-button-text-wrapper">
+                                                                                        <span class="user-settings-card-picker-button-text"></span>
+                                                                                        <div>
+                                                                                            <span id="timeZoneName">(UTC) Coordinated Universal Time</span>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="user-settings-card-picker-button-arrow-wrapper">
@@ -359,7 +438,12 @@
                                                             </div>
                                                             <div>
                                                                 <div class="header-common user-settings-card-collapse-area">
-                                                                    <span class="ms-Icon ms-Icon--chevronDown"></span>
+                                                                    <a id="collapseLTZ" class="user-settings-card-collapse-button">
+                                                                        <span class="ms-Icon ms-Icon--chevronUp"></span>
+                                                                    </a>
+                                                                    <div class="user-settings-card-expand-button">
+                                                                        <span class="ms-Icon ms-Icon--chevronDown"></span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -408,8 +492,8 @@
                                                 </div>
                                             </div>
                                             <div class="user-settings-details">
-                                                <span class="user-settings-name username">Vladimir Nikolić - GrECo JLT SSC</span>
-                                                <span class="user-settings-email useremail">v.n@gr.com</span>
+                                                <span class="user-settings-name username">James Smith - Risktech</span>
+                                                <span class="user-settings-email useremail">j.s@risktech.io</span>
                                             </div>
                                         </div>
                                         <div id="usersettingslinklist" class="header-common user-settings-linklist"></div>
@@ -460,8 +544,8 @@
                         </div>
                         <div class="header-common user-settings-small-menu-info">
                             <div class="user-settings-small-menu-user-details">
-                                <div class="username">Vladimir Nikolić - GrECo JLT SSC</div>
-                                <div class="useremail">v.n@gr.com</div>
+                                <div class="username">James Smith - Risktech</div>
+                                <div class="useremail">j.s@risktech.io</div>
                             </div>
                         </div>
                     </div>
@@ -472,6 +556,7 @@
             <div id="dataurl">VERSION: 98</div>
             <div id="mymessage"></div>
             <div id="mailboxsettingsmessage"></div>
+            <div id="supportedtimezonesmessage"></div>
             <div id="userphotomessage"></div>
             <div class="container body-content">
 		        <div id='formio'></div>
@@ -481,13 +566,22 @@
         <div id="applauncher" class="app-launcher-wrapper">
             <div class="app-launcher-content">
                 <div class="app-launcher-header">
-                    <a href="http://www.office.com/" class="app-launcher-office-home-button">
-                        <svg class="office-home-glyph" focusable="false" viewBox="0 0 16 16">
+                    <a href="http://www.office.com/" class="app-launcher-button office" target="_blank">
+                        <svg class="app-launcher-button-glyph" focusable="false" viewBox="0 0 16 16">
                             <g>
                                 <polygon points="10.066596 16.003531 1.5 12.8404802 10.066596 13.9889688 10.066596 2.48525422 4.39946326 3.85967512 4.39946326 11.6919915 1.5 12.8216525 1.5 3.21953388 10.066596 1.42108547e-14 14.8299999 1.35559321 14.8299999 14.6479378"></polygon>
                             </g>
                         </svg>
                         <span>Office.com</span>
+                    </a>
+                    <a href="https://account.activedirectory.windowsazure.com/r#/applications" class="app-launcher-button azure" target="_blank">
+                        <svg class="app-launcher-button-glyph" focusable="false" viewBox="0 0 16 16">
+                            <g>
+                                <polygon points="3.65 14.2 16 14.2 9.35 2.67 7.32 8.24 11.21 12.86 3.65 14.2"></polygon>
+                                <polygon points="8.82 1.8 4.07 5.78 0 12.83 3.67 12.83 3.67 12.84 8.82 1.8"></polygon>
+                            </g>
+                        </svg>
+                        <span>Azure</span>
                     </a>
                 </div>
                 <div>
@@ -496,11 +590,23 @@
             </div>
         </div>
         <div id="languages" class="languages-wrapper">
-            <div class="languages-container">
-                <div class="languages-content">
-                    <div class="languages-scroller-container">
-                        <div class="languages-scroller-content">
+            <div class="ltz-container">
+                <div class="ltz-content">
+                    <div class="ltz-scroller-container">
+                        <div class="ltz-scroller-content">
                             <div id="langarr">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="timeZones" class="time-zones-wrapper">
+            <div class="ltz-container">
+                <div class="ltz-content">
+                    <div class="ltz-scroller-container">
+                        <div class="ltz-scroller-content">
+                            <div id="tzarr">
                             </div>
                         </div>
                     </div>

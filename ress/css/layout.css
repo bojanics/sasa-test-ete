@@ -1,9 +1,9 @@
 ﻿@font-face {
     font-family: Office365Icons;
-    src: url('../fonts/office365icons.eot');
-    src: url('../fonts/office365icons.eot#iefix') format('embedded-opentype'),
-        url('../fonts/office365icons.woff') format('woff'),
-        url('../fonts/office365icons.ttf') format('truetype');
+    src: url('fonts/office365icons.eot');
+    src: url('fonts/office365icons.eot#iefix') format('embedded-opentype'),
+        url('fonts/office365icons.woff') format('woff'),
+        url('fonts/office365icons.ttf') format('truetype');
     font-weight: 400;
     font-style:normal
 }
@@ -693,12 +693,29 @@ body {
     font-size: 14px;
 }
 
-.collapsed-card > .user-settings-card-header-label {
+.collapsed-card > div > .user-settings-card-header-label {
     cursor: pointer;
 }
 
-.expanded-card > .user-settings-card-header-label {
+.expanded-card > div > .user-settings-card-header-label {
     cursor: default;
+}
+
+.user-settings-card-header-sublabel {
+    padding-top: 10px;
+    color: #666;
+    cursor: default;
+    white-space: normal;
+    font-size: 12px;
+    line-height: normal;
+}
+
+.collapsed-card > div > .user-settings-card-header-sublabel {
+    display: none;
+}
+
+.expanded-card > div > .user-settings-card-header-sublabel {
+    display: block;
 }
 
 .user-settings-card-value {
@@ -765,6 +782,10 @@ body {
     display: none;
     cursor: default;
     font-size: 12px;
+}
+
+.user-settings-card-combo-item {
+    margin-bottom: 16px;
 }
 
 .user-settings-card-picker-container {
@@ -854,6 +875,130 @@ body {
     cursor: pointer;
     font-size: 17px;
     color: #a6a6a6;
+}
+
+.user-settings-card-collapse-button {
+    line-height: normal;
+    text-align: center;
+    vertical-align: baseline;
+    margin: 0;
+    text-decoration: none !important;
+    min-width: 0;
+    color: #a6a6a6 !important;
+    background: transparent;
+    padding: 0;
+    cursor: pointer !important;
+    font-size: 17px;
+    display: none;
+}
+
+.user-settings-card-collapse-button:focus {
+    outline: 1px dotted black;
+}
+
+.current-theme-setting {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.current-theme-image-wrapper {
+    display: inline-block;
+    vertical-align: middle;
+    height: 20px;
+    width: 20px;
+}
+
+.current-theme-image {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    visibility: hidden;
+}
+
+.theme-list-wrapper {
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    width: 100%;
+    cursor: default;
+    white-space: normal;
+}
+
+.theme-list-container {
+    width: auto;
+    font-size: 12px;
+}
+
+.theme-list-scroller-wrappper {
+    overflow-y: auto;
+}
+
+.theme-list-scroller-wrappper::-webkit-scrollbar {
+    height: 18px;
+    width: 18px;
+}
+
+.theme-list-scroller-wrappper::-webkit-scrollbar {
+    background-color: white;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.theme-list-scroller-wrappper::-webkit-scrollbar-corner {
+    background-color: white;
+}
+
+.theme-list-scroller-wrappper::-webkit-scrollbar-thumb {
+    border-radius: 9px;
+    border: solid 6px white;
+    background-color: #c8c8c8;
+}
+
+.theme-list-scroller-wrappper::-webkit-scrollbar-track {
+    background-color: white;
+}
+
+.theme-card {
+    margin: 0 20px 20px 0;
+    border-color: black !important;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    padding: 3px;
+}
+
+.theme-card:hover {
+    border-color: #0078d7 !important;
+}
+
+.theme-card:focus {
+    outline: none;
+}
+
+.theme-card:active, .theme-card:visited {
+    text-decoration: none;
+}
+
+.theme-card.selected-theme {
+    border: 2px solid;
+    padding: 1px;
+}
+
+.theme-image-wrapper {
+    width: 34px;
+    height: 34px;
+}
+
+.theme-image {
+    width: 34px;
+    height: 34px;
+    visibility: hidden;
 }
 
 .user-settings-close {
@@ -1335,9 +1480,9 @@ body {
     line-height: 1;
 }
 
-.app-launcher-office-home-button {
+.app-launcher-button {
     display: inline-block;
-    width: calc(50% - 8px);
+    width: calc(50% - 16px);
     margin: 4px;
     font-size: 12px;
     text-decoration: none !important;
@@ -1349,12 +1494,17 @@ body {
     box-sizing: border-box;
 }
 
-.app-launcher-office-home-button:hover,
-.app-launcher-office-home-button:focus {
+.app-launcher-button.office:hover,
+.app-launcher-button.office:focus {
     background-color: #c7542b;
 }
 
-.office-home-glyph {
+.app-launcher-button.azure:hover,
+.app-launcher-button.azure:focus {
+    background-color: #0065bd;
+}
+
+.app-launcher-button-glyph {
     vertical-align: middle;
     display: inline-block;
     width: 22px;
@@ -1379,7 +1529,7 @@ body {
 }
 
 /**
- * LANGUAGES SELECTOR
+ * LANGUAGE AND TIME ZONE SELECTOR
  */
 
 .languages-wrapper {
@@ -1396,18 +1546,32 @@ body {
     border: 1px solid #eaeaea;
 }
 
-.languages-container {
+ .time-zones-wrapper {
+    min-width: 258px;
+    position: absolute;
+    box-sizing: border-box;
+    outline: 0;
+    z-index: 2002;
+    left: calc(100vw - 460px);
+    top: 64px;
+    display: none;
+    background-color: white;
+    box-shadow: 0 0 7px rgba(0, 0, 0, .4);
+    border: 1px solid #eaeaea;
+}
+
+.ltz-container {
     box-sizing: border-box;
 }
 
-.languages-content {
+.ltz-content {
     background-color: white;
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
 }
 
-.languages-scroller-container {
+.ltz-scroller-container {
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
@@ -1420,32 +1584,32 @@ body {
     overflow-y: auto;
 }
 
-.languages-scroller-container::-webkit-scrollbar {
+.ltz-scroller-container::-webkit-scrollbar {
     height: 18px;
     width: 18px;
 }
 
-.languages-scroller-container::-webkit-scrollbar-button {
+.ltz-scroller-container::-webkit-scrollbar-button {
     background-color: white;
     background-repeat: no-repeat;
     cursor: pointer;
 }
 
-.languages-scroller-container::-webkit-scrollbar-corner {
+.ltz-scroller-container::-webkit-scrollbar-corner {
     background-color: white;
 }
 
-.languages-scroller-container::-webkit-scrollbar-thumb {
+.ltz-scroller-container::-webkit-scrollbar-thumb {
     border-radius: 9px;
     border: solid 6px white;
     background-color: #c8c8c8;
 }
 
-.languages-scroller-container::-webkit-scrollbar-track {
+.ltz-scroller-container::-webkit-scrollbar-track {
     background-color: white;
 }
 
-.languages-scroller-content {
+.ltz-scroller-content {
     outline: 0;
     white-space: nowrap;
     -webkit-box-sizing: content-box;
@@ -1453,7 +1617,7 @@ body {
     box-sizing: content-box;
 }
 
-.language-container {
+.ltz-itm-container {
     outline: 0;
     position: relative;
     white-space: nowrap;
@@ -1462,7 +1626,7 @@ body {
     box-sizing: content-box;
 }
 
-.language-selector {
+.ltz-itm-selector {
     background-color: transparent;
     padding: 0 0 0 5px;
     height: 30px;
@@ -1476,11 +1640,15 @@ body {
     white-space: nowrap;
 }
 
-.language-selector:hover {
+.ltz-itm-selector:hover {
     background-color: #dcecf9;
 }
 
-.language-selector-check {
+.ltz-itm-selector:active {
+    outline: 0;
+}
+
+.ltz-itm-selector-check {
     font-size: 16px;
     display: inline-block;
     line-height: 1;
@@ -1492,7 +1660,7 @@ body {
     white-space: nowrap;
 }
 
-.language-content {
+.ltz-itm-content {
     outline: 0;
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
@@ -1507,7 +1675,7 @@ body {
     white-space: nowrap;
 }
 
-.language-wrapper {
+.ltz-itm-wrapper {
     outline: 0;
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;

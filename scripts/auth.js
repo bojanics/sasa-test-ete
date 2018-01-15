@@ -14,6 +14,13 @@ Logging = {
    }
 };
 
+var currentUser = {
+    name: "",
+    uid: "",
+    member: false,
+    personal: false
+};
+
 (function () {
     // parsing the query string into JSON 
     var adal_tenant = null;
@@ -133,15 +140,30 @@ function fillUserInfo() {
     var signeduser = ADAL!=null ? ADAL.getCachedUser() : null;
     if (signeduser && headerObj !== 'undefined' && headerObj.hasOwnProperty("account") && headerObj["account"]) {
         if (signeduser.profile.upn) {
-            // For work or school accounts
+            // For work or school accounts (tenant members)
+            currentUser.member = true;
+            currentUser.personal = false;
+            currentUser.uid = signeduser.profile.upn;
             $('.useremail').html(signeduser.profile.upn);
             $('#usersettingslinklist').append('<div><div class="user-settings-link-wrapper"><a id="myProfileLink" class="user-settings-link" role="link" href="https://delve.office.com/"><span class="user-settings-link-label" lang-tran="My profile">My profile</span></a></div><div class="user-settings-link-wrapper"><a id="myAccountLink" class="user-settings-link" role="link" href="https://portal.office.com/account/"><span class="user-settings-link-label" lang-tran="My account">My account</span></a></div><div class="user-settings-link-wrapper"><a id="signOutLink" class="user-settings-link" role="link" href="https://login.microsoftonline.com/' + ADAL.config.tenant + '/oauth2/logout"><span class="user-settings-link-label" lang-tran="Sign out">Sign out</span></a></div></div>');
-        } else {
+        } else if (signeduser.profile.idp === "live.com") {
             // For personal accounts
+            currentUser.member = false;
+            currentUser.personal = true;
+            currentUser.uid = signeduser.profile.email;
             $('.useremail').html(signeduser.profile.email);
             $('#usersettingslinklist').append('<div><div class="user-settings-link-wrapper"><a id="myProfileLink" class="user-settings-link" role="link" href="https://account.microsoft.com/profile/"><span class="user-settings-link-label" lang-tran="My profile">My profile</span></a></div><div class="user-settings-link-wrapper"><a id="myAccountLink" class="user-settings-link" role="link" href="https://account.microsoft.com/"><span class="user-settings-link-label" lang-tran="My account">My account</span></a></div><div class="user-settings-link-wrapper"><a id="signOutLink" class="user-settings-link" role="link" href="https://login.microsoftonline.com/' + ADAL.config.tenant + '/oauth2/logout"><span class="user-settings-link-label" lang-tran="Sign out">Sign out</span></a></div></div>');
+        } else {
+            // For work or school accounts which are guests
+            currentUser.member = false;
+            currentUser.personal = false;
+            currentUser.uid = signeduser.profile.email;
+            $('.useremail').html(signeduser.profile.email);
+            $('#usersettingslinklist').append('<div><div class="user-settings-link-wrapper"><a id="myProfileLink" class="user-settings-link" role="link" href="https://delve.office.com/"><span class="user-settings-link-label" lang-tran="My profile">My profile</span></a></div><div class="user-settings-link-wrapper"><a id="myAccountLink" class="user-settings-link" role="link" href="https://portal.office.com/account/"><span class="user-settings-link-label" lang-tran="My account">My account</span></a></div><div class="user-settings-link-wrapper"><a id="signOutLink" class="user-settings-link" role="link" href="https://login.microsoftonline.com/' + ADAL.config.tenant + '/oauth2/logout"><span class="user-settings-link-label" lang-tran="Sign out">Sign out</span></a></div></div>');
         }
         
+        
+        currentUser.name = signeduser.profile.name;
         $('.username').html(signeduser.profile.name);
         getuserphotometadata();
     }
@@ -301,6 +323,14 @@ function getdatanoadalmailboxsettings(token,url) {
         }
         
         console.log("Selected language="+languageSelector.selectedLanguage);
+        
+        if (data && data["timeZone"]) {
+            setInitialTimeZone(data["timeZone"]);
+            console.log("User's current time zone alias: " + data["timeZone"]);
+        } else {
+            console.log("User's current time zone hasn't been received.");
+        }
+        
         // Translate the page
         setupPredefinedLanguage();
         setupStyle();
@@ -311,6 +341,40 @@ function getdatanoadalmailboxsettings(token,url) {
         setupStyle();
         console.log('getmailboxsettingsdata call failed');
         document.getElementById('mailboxsettingsmessage').innerHTML='Failed to retrieve the mailbox data!';
+        console.log("AJAX REQUEST FAILED:"+err.toString()+',textStatus='+textStatus+', errorThrown='+errorThrown);
+        alert("AJAX REQUEST FAILED:"+err.toString()+',textStatus='+textStatus+', errorThrown='+errorThrown);
+    });
+}
+
+function getSupportedTimeZones() {
+    document.getElementById('supportedtimezonesmessage').innerHTML='Waiting for data...';
+    executeAjaxRequestWithAdalLogic("https://graph.microsoft.com", getDataOnAdalSupportedTimeZones, 'https://graph.microsoft.com/beta/me/outlook/supportedTimeZones');
+}
+
+function getDataOnAdalSupportedTimeZones(token, url) {
+    var settings = {
+        "crossDomain": true,
+        "url": url,
+        "timeout":30000,
+        "method": "GET",        
+        "headers": {
+            "Authorization": "Bearer " + token
+        }
+    }
+    
+    $.ajax(settings).done(function (data, textStatus, request) {
+        console.log('getSupportedTimeZones call successfully executed');
+        document.getElementById('supportedtimezonesmessage').innerHTML='Supported time zones successfully retrieved!';
+        if (data && data["value"]) {
+            setSupportedTimeZones(data["value"]);
+            console.log('Supported time zones successfully retrieved! payload: ' + (data!=null ? JSON.stringify(data) : null));
+        } else {
+            console.log("Invalid response format!");
+        }
+    }).fail(function (err, textStatus, errorThrown) {
+        mailboxSettingsAvailable = false;
+        console.log('getSupportedTimeZones call failed');
+        document.getElementById('supportedtimezonesmessage').innerHTML='Failed to retrieve supported time zones!';
         console.log("AJAX REQUEST FAILED:"+err.toString()+',textStatus='+textStatus+', errorThrown='+errorThrown);
         alert("AJAX REQUEST FAILED:"+err.toString()+',textStatus='+textStatus+', errorThrown='+errorThrown);
     });

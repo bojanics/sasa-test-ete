@@ -23,6 +23,10 @@ function setupLayout() {
         {
             $("#mainLogo").find("img").attr("src", brandObj["mainlogopath"]);
         }
+        else
+        {
+            $("#mainLogo").find("img").attr("src", "./ress/jpeg/risktech/Risktech48.jpg");
+        }
         
         // Set up partner's logo and show it if defined
         if (brandObj["partnerlogopath"])
@@ -137,6 +141,11 @@ function setupLayout() {
                 }
             }
         }
+        
+        if (headerObj.hasOwnProperty("theme settings") && headerObj["theme settings"] === true)
+        {
+            $('#themeCardWrapper').show();
+        }
     }
     
     // Display the main logo even if its path is not defined in brandObj
@@ -158,6 +167,12 @@ function setupLayout() {
         {
             languageSelectorWrapper.hide();
         }
+        
+        var timeZoneSelectorWrapper = $('#timeZones');
+        if (!timeZoneSelectorWrapper.is(e.target) && timeZoneSelectorWrapper.has(e.target).length === 0)
+        {
+            timeZoneSelectorWrapper.hide();
+        }
     });
     
     $('.user-settings-card').click(function (e)
@@ -167,57 +182,23 @@ function setupLayout() {
             e.stopPropagation();
             $(this).addClass('extended-card').removeClass('collapsed-card');
             $(this).find('.user-settings-card-value').addClass('user-settings-card-edit').removeClass('user-settings-card-value');
-            $(this).find('#languageValue').hide();
+            $(this).find('.user-settings-card-value-content').hide();
             $(this).find('.user-settings-card-combo-wrapper').show();
-            $(this).find('.user-settings-card-collapse-area').hide();
+            $(this).find('.user-settings-card-expand-button').hide();
+            $(this).find('.user-settings-card-collapse-button').show();
             $(this).find('.user-settings-card-footer').show();
         }
     });
     
+    $('#saveTheme').click(saveTheme);
+    $('#cancelTheme').click(cancelTheme);
+    $('#collapseTheme').click(cancelTheme);
+    
     $('#saveLTZ').click(saveLTZ);
     $('#cancelLTZ').click(cancelLTZ);
+    $('#collapseLTZ').click(cancelLTZ);
     
     setupLanguageMenu();
-}
-
-/**
- * Shows content when bootstrap or bootswatch style is loaded and applied to the content
- */
-function showContentOnStyleApply()
-{
-    // We added btn class to this element and it will have text-align
-    // set to center once bootswatch has been rendered
-    if ($("#renderIndicator").css("text-align") !== "right")
-    {
-        $('.content-wrapper').show();
-    }
-    else
-    {
-        setTimeout(showContentOnStyleApply, 50);
-    }
-}
-
-/**
- * Reads style settings (bootswatch theme) from bran.json.js and applies it
- */
-function setupStyle() {
-    var bootswatchStyleDE = document.createElement("link");
-    bootswatchStyleDE.rel = "stylesheet";
-    
-    // We should show the form after new styles has been loaded to prevent FOUC
-    bootswatchStyleDE.onload = showContentOnStyleApply();
-    if (typeof brandObj !== 'undefined' && brandObj["bootswatchtheme"])
-    {
-        bootswatchStyleDE.href = "./ress/css/" + brandObj["bootswatchtheme"] + "/bootstrap.min.css";
-    }
-    else
-    {
-        // If no bootswatch theme is defined we use cosmo
-        bootswatchStyleDE.href = "./ress/css/cosmo/bootstrap.min.css";
-    }
-    
-    var layoutStyleNode = document.getElementById("layoutstyle");
-    layoutStyleNode.parentNode.insertBefore(bootswatchStyleDE, layoutStyleNode.nextSibling);
 }
 
 /**
@@ -477,7 +458,7 @@ function hideEnvironmentDropdown()
             if (wrapper)
             {
                 var dropdownListWrapers = wrapper.getElementsByClassName('environment-dropdown');
-                if (dropdownListWrapers && dropdownListWrapers[0])//            && dropdownListWrapers[0].classList.contains('header-hidden-element'))
+                if (dropdownListWrapers && dropdownListWrapers[0])
                 {
                     // Close the dropdown menu
                     if (!dropdownListWrapers[0].classList.contains('header-hidden-element'))
@@ -602,7 +583,7 @@ function closeAppLauncher()
 }
 
 /**
- * Opends a list of available languages
+ * Opens a list of available languages
  */
 function chooseLanguage()
 {
@@ -610,34 +591,94 @@ function chooseLanguage()
 }
 
 /**
- * Collapses extended 'Language and time zone' card
+ * Opens a list of available time zones
  */
-function closeExtendedLTZCard()
+function chooseTimeZone()
 {
-    if ($('#LTZCard').hasClass('extended-card'))
-    {
-        $('#LTZCard').addClass('collapsed-card').removeClass('extended-card');
-        $('#LTZCard').find('.user-settings-card-value').addClass('user-settings-card-value').removeClass('user-settings-card-edit');
-        $('#LTZCard').find('#languageValue').show();
-        $('#LTZCard').find('.user-settings-card-combo-wrapper').hide();
-        $('#LTZCard').find('.user-settings-card-collapse-area').show();
-        $('#LTZCard').find('.user-settings-card-footer').hide();
-    }
+    $('#timeZones').show();
 }
 
 /**
- * 
+ * Collapses extended settings menu card
+ */
+(function($)
+{
+    $.fn.closeExtendedCard = function()
+    {
+        return this.each(function()
+        {
+            $this = $(this);
+            if ($this.hasClass('extended-card'))
+            {
+                $this.addClass('collapsed-card').removeClass('extended-card');
+                $this.find('.user-settings-card-value').addClass('user-settings-card-value').removeClass('user-settings-card-edit');
+                $this.find('.user-settings-card-value-content').show();
+                $this.find('.user-settings-card-combo-wrapper').hide();
+                $this.find('.user-settings-card-expand-button').show();
+                $this.find('.user-settings-card-collapse-button').hide();
+                $this.find('.user-settings-card-footer').hide();
+            }
+        });
+    };
+}(jQuery));
+
+/**
+ * Saves language and time zone changes and collapses extended 'Language and time zone' card
  */
 function saveLTZ(e)
 {
     e.stopPropagation();
-    setChosenLanguage();
-    closeExtendedLTZCard();
+    var languageChanged = setChosenLanguage();
+    var timeZoneChanged = setChosenTimeZone();
+    if ((languageChanged || timeZoneChanged) && isUseOutlookMailSettings() && mailboxSettingsAvailable && isSignedInUser())
+    {
+        var payload;
+        if (languageChanged && timeZoneChanged)
+        {
+            payload = {"timeZone":timeZoneSelector.currentTimeZone,"language":{"locale":languageSelector.currentLanguage}};
+        }
+        else if (languageChanged)
+        {
+            payload = {"language":{"locale":languageSelector.currentLanguage}};
+        }
+        else
+        {
+            payload = {"timeZone":timeZoneSelector.currentTimeZone};
+        }
+        
+        patchmailboxsettingsdata("https://graph.microsoft.com/beta/me/mailboxSettings", payload);
+    }
+    
+    $('#LTZCard').closeExtendedCard();
 }
 
+/**
+ * Cancels language and time zone changes and collapses extended 'Language and time zone' card
+ */
 function cancelLTZ(e)
 {
     e.stopPropagation();
     resetLanguage();
-    closeExtendedLTZCard();
+    resetTimeZone();
+    $('#LTZCard').closeExtendedCard();
+}
+
+/**
+ * Saves theme changes and collapses extended 'Theme' card
+ */
+function saveTheme(e)
+{
+    e.stopPropagation();
+    applyTheme();
+    $('#themeCard').closeExtendedCard();
+}
+
+/**
+ * Cancels theme changes and collapses extended 'Theme' card
+ */
+function cancelTheme(e)
+{
+    e.stopPropagation();
+    resetTheme();
+    $('#themeCard').closeExtendedCard();
 }

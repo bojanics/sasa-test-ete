@@ -27,8 +27,8 @@ languagesMap['UK-UA'] = 'українська (Україна)';
  */
 var languageSelector =
 {
-    currentLanguage: 'DE-AT',
-    selectedLanguage: 'DE-AT'
+    currentLanguage: 'EN-GB',
+    selectedLanguage: 'EN-GB'
 };
 
 function setupLanguageMenu()
@@ -36,10 +36,10 @@ function setupLanguageMenu()
     setLanguageSettings(languageSelector.currentLanguage);
     $.each(languagesMap, function(code, name)
     {
-        var languageItem = '<div class="language-container"><button class="language-selector" onclick="selectLanguage(this,\''
-            + code + '\')"><span id="langCheck' + code + '" class="ms-Icon ms-Icon--check language-selector-check"'
+        var languageItem = '<div class="ltz-itm-container"><button class="ltz-itm-selector" onclick="selectLanguage(this,\''
+            + code + '\')"><span id="langCheck' + code + '" class="ms-Icon ms-Icon--check ltz-itm-selector-check"'
             + (code === languageSelector.currentLanguage ? ' style="visibility: visible;"' : '') 
-            + '></span><div class="language-content"><div class="language-wrapper"><span>'
+            + '></span><div class="ltz-itm-content"><div class="ltz-itm-wrapper"><span>'
             + name + '&lrm;</span></div></div></button></div>';
         $('#langarr').append(languageItem);
     });
@@ -61,8 +61,8 @@ function selectLanguage(languageButton, lang)
 {
     languageSelector.selectedLanguage = lang;
     setLanguageSettings(lang);
-    $('#langarr').find('.language-selector-check').css('visibility', 'hidden');
-    $(languageButton).find('.language-selector-check').css('visibility', 'visible');
+    $('#langarr').find('.ltz-itm-selector-check').css('visibility', 'hidden');
+    $(languageButton).find('.ltz-itm-selector-check').css('visibility', 'visible');
     $('#languages').hide();
 }
 
@@ -75,7 +75,7 @@ function setupPredefinedLanguage()
 {
     applyTranslation();
     setLanguageSettings(languageSelector.currentLanguage);
-    $(".language-selector-check").css('visibility', 'hidden');
+    $(".ltz-itm-selector-check").css('visibility', 'hidden');
     $("#langCheck" + languageSelector.currentLanguage).css('visibility', 'visible');
 }
 
@@ -84,9 +84,11 @@ function setupPredefinedLanguage()
  */
 function applyTranslation()
 {
+    var oldLanguage = languageSelector.currentLanguage;
     languageSelector.currentLanguage = languageSelector.selectedLanguage;
-    setLanguage(languageSelector.selectedLanguage.replace("-", "_").replace("-", "_")); // We need to replace twice in order to cover SR_LATN_CS
+    setLanguage(languageSelector.selectedLanguage);
     $("[lang-tran]").translate();
+    changeLanguageForThemeSettings(oldLanguage, languageSelector.currentLanguage);
 }
 
 /**
@@ -103,10 +105,10 @@ function applyTranslation()
                 && langLayoutObj[languageSelector.selectedLanguage][$this.attr("lang-tran")] !== undefined)
             {
                 $this.html(langLayoutObj[languageSelector.selectedLanguage][$this.attr("lang-tran")]);
-            } else if ($this.attr("lang-tran") !== undefined && langObj.i18n.resources.hasOwnProperty(languageSelector.selectedLanguage.replace("-", "_").replace("-", "_"))
-                && langObj.i18n.resources[languageSelector.selectedLanguage.replace("-", "_").replace("-", "_")].translation[$this.attr("lang-tran")] !== undefined)
+            } else if ($this.attr("lang-tran") !== undefined && langObj.i18n.resources.hasOwnProperty(languageSelector.selectedLanguage)
+                && langObj.i18n.resources[languageSelector.selectedLanguage].translation[$this.attr("lang-tran")] !== undefined)
             {
-                $this.html(langObj.i18n.resources[languageSelector.selectedLanguage.replace("-", "_").replace("-", "_")].translation[$this.attr("lang-tran")]);
+                $this.html(langObj.i18n.resources[languageSelector.selectedLanguage].translation[$this.attr("lang-tran")]);
             }
         });
     };
@@ -117,10 +119,10 @@ function applyTranslation()
  */
 function setChosenLanguage()
 {
+    var languageChanged = (languageSelector.selectedLanguage === languageSelector.currentLanguage);
     applyTranslation();
-    if (isUseOutlookMailSettings() && mailboxSettingsAvailable && isSignedInUser()) {
-        patchmailboxsettingsdata("https://graph.microsoft.com/beta/me/mailboxSettings", {"language":{"locale":languageSelector.currentLanguage}});
-    }
+    
+    return languageChanged;
 }
 
 /**

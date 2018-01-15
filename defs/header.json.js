@@ -4,5 +4,6 @@ var headerObj = {
     "notifications": true,
     "settings": true,
     "help": true,
-    "account": true
+    "account": true,
+    "theme settings": true
 };
