@@ -16,21 +16,18 @@ Logging = {
 
 (function () {
     // parsing the query string into JSON 
+    var adal_tenant = null;
+    var adal_clientId = null;
     var query = window.location.search.substring(1);
     var qs = '{}';
     if (query!=null && query!='') {
         var qs = parse_query_string(query);
-    }
-    var adal_tenant = qs['tenant'];
-    if (adal_tenant!=null) {
-       localStorage.setItem('adal_tenant',adal_tenant);
+        adal_tenant = qs['tenant'];
+        localStorage.setItem('adal_tenant',adal_tenant);
+        adal_clientId = qs['client'];
+        localStorage.setItem('adal_clientId',adal_clientId);
     } else {
        adal_tenant = localStorage.getItem('adal_tenant');
-    }
-    var adal_clientId = qs['client'];
-    if (adal_clientId!=null) {
-       localStorage.setItem('adal_clientId',adal_clientId);
-    } else {
        adal_clientId = localStorage.getItem('adal_clientId');
     }
     
