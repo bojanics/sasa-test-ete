@@ -1,20 +1,10 @@
 var addtwonumbersurl = null;
 var mailboxSettingsAvailable = true;
-var adal_tenant = null;
-var adal_clientId = null;
 /*var endpoints = {
    'https://graph.windows.net/': '00000002-0000-0000-c000-000000000000',
    'https://graph.microsoft.com/': '00000003-0000-0000-c000-000000000000'
 };*/
-var ADAL = new AuthenticationContext({
-                instance: 'https://login.microsoftonline.com/',
-                tenant: 'b4a7cf6c-8876-456a-b97f-1e2bbeb7579a', //COMMON OR YOUR TENANT ID
-                clientId: '0b2d8b43-929e-412c-b6d4-2d536ffc1e92', //REPLACE WITH YOUR CLIENT ID
-                redirectUri: [window.location.protocol, '//', window.location.host, window.location.pathname].join(''), // THE CDN URI
-                cacheLocation: isIEBrowser() ? 'localStorage' : 'sessionStorage', // enable this for IE, as sessionStorage does not work for localhost.
-                //endpoints: endpoints,
-                popUp: false
-            });
+var ADAL = null;
 
 // output ADAL logs to the console
 Logging = {
@@ -31,7 +21,19 @@ Logging = {
     if (query!=null && query!='') {
         var qs = parse_query_string(query);
     }
-
+    var adal_tenant = qs['tenant'];
+    if (adal_tenant!=null) {
+       localStorage.setItem('adal_tenant',adal_tenant);
+    } else {
+       adal_tenant = localStorage.getItem('adal_tenant');
+    }
+    var adal_clientId = qs['client'];
+    if (adal_clientId!=null) {
+       localStorage.setItem('adal_clientId',adal_clientId);
+    } else {
+       adal_clientId = localStorage.getItem('adal_clientId');
+    }
+    
     var isIfrm = isIframe();
     var isCallback = isADALCallback();
     console.log('isIframe: '+isIfrm+', isADALInitialized: '+isSignedInUser()+', isCallback='+isCallback+', query string: '+query);
@@ -39,20 +41,20 @@ Logging = {
     // check and use ADAL if we have signed in user or we need to initialize it
     // NOTE: ADAL should be used if this is running inside iFrame (it means it is refreshing the ID token), or if we already have signed-in user, 
     // or we are in process of initialization (callback), or if we have the query parameter 'online' equal to 'true'
-    var shouldUseADAL = isIfrm || isSignedInUser() || isCallback || qs['online']=='true';
+    var shouldUseADAL = isIfrm || isSignedInUser() || isCallback || (qs['online']=='true' && adal_clientId && adal_tenant);
     console.log('should use ADAL: '+shouldUseADAL);
     alert('suada='+shouldUseADAL);
     if (shouldUseADAL) {
          if (ADAL==null) {
-            /*ADAL = new AuthenticationContext({
+            ADAL = new AuthenticationContext({
                 instance: 'https://login.microsoftonline.com/',
-                tenant: 'b4a7cf6c-8876-456a-b97f-1e2bbeb7579a', //COMMON OR YOUR TENANT ID
-                clientId: '0b2d8b43-929e-412c-b6d4-2d536ffc1e92', //REPLACE WITH YOUR CLIENT ID
+                tenant: adal_tenant,//'b4a7cf6c-8876-456a-b97f-1e2bbeb7579a', //COMMON OR YOUR TENANT ID
+                clientId: adal_clientId,//'0b2d8b43-929e-412c-b6d4-2d536ffc1e92', //REPLACE WITH YOUR CLIENT ID
                 redirectUri: [window.location.protocol, '//', window.location.host, window.location.pathname].join(''), // THE CDN URI
                 cacheLocation: isIEBrowser() ? 'localStorage' : 'sessionStorage', // enable this for IE, as sessionStorage does not work for localhost.
                 //endpoints: endpoints,
                 popUp: false
-            });   */
+            });   
          }
           
        
