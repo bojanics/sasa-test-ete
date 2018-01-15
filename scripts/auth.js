@@ -40,7 +40,6 @@ Logging = {
     // or we are in process of initialization (callback), or if we have the query parameter 'online' equal to 'true'
     var shouldUseADAL = isIfrm || isSignedInUser() || isCallback || (qs['online']=='true' && adal_clientId!=null && adal_tenant!=null);
     console.log('should use ADAL: '+shouldUseADAL);
-    alert('suada='+shouldUseADAL);
     if (shouldUseADAL) {
          if (ADAL==null) {
             ADAL = new AuthenticationContext({
