@@ -1,19 +1,12 @@
 var addtwonumbersurl = null;
 var mailboxSettingsAvailable = true;
-
+var adal_tenant = null;
+var adal_clientId = null;
 /*var endpoints = {
    'https://graph.windows.net/': '00000002-0000-0000-c000-000000000000',
    'https://graph.microsoft.com/': '00000003-0000-0000-c000-000000000000'
 };*/
-var ADAL = new AuthenticationContext({
-    instance: 'https://login.microsoftonline.com/',
-    tenant: 'common', //'b4a7cf6c-8876-456a-b97f-1e2bbeb7579a', //COMMON OR YOUR TENANT ID
-    clientId: '0b2d8b43-929e-412c-b6d4-2d536ffc1e92', //REPLACE WITH YOUR CLIENT ID
-    redirectUri: [window.location.protocol, '//', window.location.host, window.location.pathname].join(''), // THE CDN URI
-    cacheLocation: isIEBrowser() ? 'localStorage' : 'sessionStorage', // enable this for IE, as sessionStorage does not work for localhost.
-    //endpoints: endpoints,
-    popUp: false
-});   
+var ADAL = null;
 
 // output ADAL logs to the console
 Logging = {
@@ -30,6 +23,16 @@ Logging = {
     if (query!=null && query!='') {
         var qs = parse_query_string(query);
     }
+
+   ADAL = new AuthenticationContext({
+       instance: 'https://login.microsoftonline.com/',
+       tenant: 'b4a7cf6c-8876-456a-b97f-1e2bbeb7579a', //COMMON OR YOUR TENANT ID
+       clientId: '0b2d8b43-929e-412c-b6d4-2d536ffc1e92', //REPLACE WITH YOUR CLIENT ID
+       redirectUri: [window.location.protocol, '//', window.location.host, window.location.pathname].join(''), // THE CDN URI
+       cacheLocation: isIEBrowser() ? 'localStorage' : 'sessionStorage', // enable this for IE, as sessionStorage does not work for localhost.
+       //endpoints: endpoints,
+       popUp: false
+   });   
     
     var isIfrm = isIframe();
     var isCallback = ADAL.isCallback(window.location.hash);
