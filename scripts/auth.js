@@ -113,7 +113,7 @@ function isIEBrowser() {
 }
    
 function isSignedInUser () {
-    return ADAL.getCachedUser()!=null;
+    return ADAL!=null && ADAL.getCachedUser()!=null;
 }
 
 function isUseOutlookMailSettings() {
