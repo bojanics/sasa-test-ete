@@ -34,6 +34,7 @@ Logging = {
     var shouldUseADAL = isIfrm || isSignedInUser() || isCallback || qs['online']=='true';
     console.log('should use ADAL: '+shouldUseADAL);
     if (shouldUseADAL) {
+         console.log('query='+query);
          if (ADAL==null) {
             ADAL = new AuthenticationContext({
                 instance: 'https://login.microsoftonline.com/',
@@ -44,8 +45,6 @@ Logging = {
                 //endpoints: endpoints,
                 popUp: false
             });   
-         } else {
-            console.log('ADAL is not NUYLL');
          }
           
        
