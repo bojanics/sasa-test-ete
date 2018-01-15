@@ -27,15 +27,16 @@ var currentUser = {
     var adal_clientId = null;
     var query = window.location.search.substring(1);
     var qs = '{}';
+    var storageObj = isIEBrowser() ? localStorage : sessionStorage;
     if (query!=null && query!='') {
         var qs = parse_query_string(query);
         adal_tenant = qs['tenant'];
-        localStorage.setItem('adal_tenant',adal_tenant);
+        storageObj.setItem('adal_tenant',adal_tenant);
         adal_clientId = qs['client'];
-        localStorage.setItem('adal_clientId',adal_clientId);
+        storageObj.setItem('adal_clientId',adal_clientId);
     } else {
-       adal_tenant = localStorage.getItem('adal_tenant');
-       adal_clientId = localStorage.getItem('adal_clientId');
+       adal_tenant = storageObj.getItem('adal_tenant');
+       adal_clientId = storageObj.getItem('adal_clientId');
     }
     
     var isIfrm = isIframe();
