@@ -166,6 +166,11 @@
                         window.setLanguage = function (lang) {
                             form.language = lang;
                         };
+                        var mqs = parse_query_string(window.location.search.substring(1));
+                        console.log('mqs='+mqs);
+                        console.log('mqs.cl='+mqs.client);
+                        console.log('mqs jsonparse='+JSON.stringify(mqs));
+                        form.submission = {"data":mqs};
                         form.ready.then(function() {
                             // Find out user's mailbox settings
                             if (isUseOutlookMailSettings() && isSignedInUser()) {
@@ -183,9 +188,6 @@
                         });
                     });
                     fillUserInfo();         
-                    var mqs = parse_query_string(window.location.search.substring(1));
-                    console.log('mqs='+mqs);
-                    console.log('qscl='+mqs.client);
                 } else {
                   console.log('The onload code wont be executed because we are running inside iFrame');
                 }
