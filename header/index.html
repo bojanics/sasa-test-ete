@@ -183,22 +183,7 @@
                             console.log(submission);
                         });
                     });
-                    fillUserInfo();
-         
-                    // Calling function APP if it is online form (we have signed-in user) and we have data URL
-                    if (isSignedInUser()) {
-                        // parsing the query string into JSON 
-                        var query = window.location.search.substring(1);
-                        var qs = '{}';
-                        if (query!=null && query!='') {
-                           var qs = parse_query_string(query);
-                        }
-                        var azureurl = qs['data_url']; 
-                        if (azureurl) {
-                           console.log('calling getdata with url='+azureurl);            
-                           getdata(azureurl);
-                        }
-                    }
+                    fillUserInfo();         
                 } else {
                   console.log('The onload code wont be executed because we are running inside iFrame');
                 }
