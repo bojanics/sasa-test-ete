@@ -166,9 +166,8 @@
                         var qsjson = parse_query_string(window.location.search.substring(1));
                         form.submission = {"data":qsjson};
                         form.httprequest = {
-                           protocol : window.location.protocol,
+                           protocol : window.location.protocol.substring(0,window.location.protocol.length-1),
                            hostname: window.location.hostname,
-                           port: window.location.port,
                            pathname: window.location.pathname,
                            querystring: window.location.search,
                            queryjson: qsjson
