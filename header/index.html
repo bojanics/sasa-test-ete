@@ -167,6 +167,7 @@
                             form.language = lang;
                         };
                         var qsjson = parse_query_string(window.location.search.substring(1));
+                        console.log("qjson="+JSON.stringify(qsjson));
                         form.submission = {"data":qsjson};
                         form.ready.then(function() {
                             // Find out user's mailbox settings
