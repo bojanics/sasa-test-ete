@@ -163,12 +163,20 @@
                         form.header = {
                             user: currentUser
                         };
+                        var qsjson = parse_query_string(window.location.search.substring(1));
+                        form.submission = {"data":qsjson};
+                        form.httprequest = {
+                           protocol : window.location.protocol,
+                           hostname: window.location.hostname,
+                           port: window.location.port,
+                           pathname: window.location.pathname,
+                           querystring: window.location.search,
+                           queryjson: qsjson
+                        }
+                        console.log('fhht='+JSON.stringify(form.httprequest));
                         window.setLanguage = function (lang) {
                             form.language = lang;
                         };
-                        var qsjson = parse_query_string(window.location.search.substring(1));
-                        console.log("qjson="+JSON.stringify(qsjson));
-                        form.submission = {"data":qsjson};
                         form.ready.then(function() {
                             // Find out user's mailbox settings
                             if (isUseOutlookMailSettings() && isSignedInUser()) {

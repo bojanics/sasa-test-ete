@@ -1,4 +1,4 @@
-var addtwonumbersurl = "https://sasa-test-ete-fnc.azurewebsites.net/Add" //null;
+var addtwonumbersurl = null;
 var mailboxSettingsAvailable = true;
 /*var endpoints = {
    'https://graph.windows.net/': '00000002-0000-0000-c000-000000000000',
