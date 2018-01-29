@@ -1,5 +1,6 @@
 var headerObj = {
     "use outlook settings": true,
+    "use user property extensions": true,
     "environment": true,
     "notifications": true,
     "settings": true,
@@ -7,3 +8,4 @@ var headerObj = {
     "account": true,
     "theme settings": true
 };
+$.holdReady(false);

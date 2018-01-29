@@ -128,9 +128,19 @@ themesMap['yeti'] =
  */
 var themeSelector =
 {
-    currentTheme: 'bluemeanie',
-    selectedTheme: 'bluemeanie'
+    currentTheme: 'cosmo',
+    selectedTheme: 'cosmo'
 };
+
+var themePropertyExtensionId = "frm-hdr-user-properies";
+
+function setupTheme(theme) {
+    if (themesMap[theme]) {
+        themeSelector.selectedTheme = theme;
+        themeSelector.currentTheme = theme;
+        setupStyle();
+    }
+}
 
 /**
  * Reads style settings (bootswatch theme) from brand.json.js and applies it
@@ -147,8 +157,9 @@ function setupStyle()
     {
         themeSelector.currentTheme = brandObj["bootswatchtheme"];
         themeSelector.selectedTheme = themeSelector.currentTheme;
-        setupThemeMenu();
     }
+    
+    setupThemeMenu();
     
     bootswatchStyleDE.href = "./ress/css/" + themesMap[themeSelector.currentTheme].bootswatchtheme + "/bootstrap.min.css";
     var layoutStyleNode = document.getElementById("layoutstyle");
@@ -228,6 +239,11 @@ function applyTheme()
     
     // We should show the form after new styles has been loaded to prevent FOUC
     document.getElementById('bodystyle').onload = showContentOnStyleApply();
+    
+    // Update user's property extensions
+    if (isUseUserPropertyExtensions() && userPropertyExtensionsAvailable  && isSignedInUser()) {
+        updateThemePropertyExtension(themeSelector.currentTheme);
+    }
 }
 
 /**
