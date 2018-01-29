@@ -7,3 +7,4 @@ var headerObj = {
     "account": true,
     "theme settings": true
 };
+$.holdReady(false);
