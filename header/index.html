@@ -7,7 +7,6 @@
         <link rel="stylesheet" href="./ress/css/fabric.min.css">
         <link rel="stylesheet" href="./ress/css/fabric.components.min.css">
         <link id="layoutstyle" href="./ress/css/layout.css" rel="stylesheet">
-        <link id="themelayoutstyle" href="./ress/css/cosmo/layout-override.css" rel="stylesheet">
 		<link href="./ress/css/formio.full.min.css" rel="stylesheet">
 		<script src="./scripts/vendor/formio.full.min.js"></script>
         <script src="./scripts/vendor/jquery-1.10.2.min.js"></script>
@@ -19,7 +18,7 @@
         <script src="./scripts/auth.js"></script>
         <script id="appConfImport" type="text/javascript">
         (function() {
-            var appDef = "./defs/app.json.js";
+            var appDef = "../appcnfs/app.json.js";
             
             // Check if we have an URI paramater which specifies
             // a path to the app configuration. If so we'll use it.
@@ -40,12 +39,13 @@
             
             var appDSE = document.createElement("script");
             appDSE.src = appDef;
+            appDSE.id = "appdef";
             var currentNode = document.getElementById("appConfImport");
             currentNode.parentNode.insertBefore(appDSE, currentNode.nextSibling);
             
-            var defsSE = document.createElement("script");
-            defsSE.src = "./scripts/defimp.js";
-            currentNode.parentNode.insertBefore(defsSE, currentNode.nextSibling);
+            var checkAppDefinitionSE = document.createElement("script");
+            checkAppDefinitionSE.src = "./scripts/checkapp.js";
+            currentNode.parentNode.insertBefore(checkAppDefinitionSE, currentNode.nextSibling);
         })();
         </script>
         <script src="./scripts/lang-form.json.js"></script>
@@ -505,6 +505,7 @@
                     </div>
                 </div>
             </div>
+            <div id="headerRenderIndicator" class="indicator"></div>
         </div>
 		<div class="content-wrapper">
             <div id="dataurl">VERSION: 98</div>
