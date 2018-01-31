@@ -21,7 +21,7 @@ function setupApp()
     {      
         if (isSignedInUser())
         {
-            document.getElementById('mymessage').innerHTML='ADAL logic finished...';
+            console.log('ADAL logic finished...');
         }
         
         // Initializing the form
@@ -209,6 +209,11 @@ function setupLayout() {
     
     if (typeof headerObj !== 'undefined')
     {
+        if (headerObj.hasOwnProperty("app launcher") && headerObj["app launcher"] === false)
+        {
+            $(".appl-button").addClass('static').prop('onclick', null).off('click');
+        }
+        
         var hasEnvironments = true;
         if (headerObj.hasOwnProperty("environment") && headerObj["environment"] === false)
         {
@@ -307,6 +312,25 @@ function setupLayout() {
         {
             $('#themeCardWrapper').show();
         }
+        
+        if (!headerObj.hasOwnProperty("feedback") || headerObj["feedback"] === false)
+        {
+            $("#feedbackInserted").hide();
+        }
+ 
+        // We add the keydown listener only when feedback is enabled in order to avoid unnecessary triggers and improve performance 
+        if(headerObj.hasOwnProperty("feedback") && headerObj["feedback"] === true)
+        {
+            //On press escape close feedback     
+            $(document).on('keydown', function(e)
+            {
+                if(e.keyCode === 27)  //ESC
+                {
+                    $('#feedbackOverlayBackground').hide();
+                    $('#feedbackLeftFormContainer').hide();
+                }    
+            });
+        }    
     }
     
     // Display the main logo even if its path is not defined in brandObj
@@ -360,6 +384,18 @@ function setupLayout() {
     $('#collapseLTZ').click(cancelLTZ);
     
     setupLanguageMenu();
+
+    //Close feedback on click without feedback div
+    $('#feedbackOverlayBackground').click(function()
+    {
+        $('#feedbackOverlayBackground').hide();
+        $('#feedbackLeftFormContainer').hide();
+    });
+    
+    $('#feedbackMainContainer').click(function(e)
+    {
+        e.stopPropagation();  
+    });
 }
 
 /**
@@ -849,3 +885,16 @@ function cancelTheme(e)
     resetTheme();
     $('#themeCard').closeExtendedCard();
 }
+
+/**
+ * Show feedback dialog
+ */
+function showFeedbackDialog()
+{
+        $('#feedbackOverlayBackground').show();
+        setTimeout(function()
+        {
+          $('#feedbackLeftFormContainer').show();
+        }, 1000);
+}
+
