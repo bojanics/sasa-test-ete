@@ -26,7 +26,7 @@
 
 /**
  * Loads script from specified URL by creating a new script element and appending it to the head part of the html.
- * Runs a callback function when the script gets loaded.
+ * Runs a callback function when the script gets loaded. Runs the errorHandler function if the script fails to load.
  */
 function loadScript(url, callback, errorHandler)
 {
@@ -187,22 +187,46 @@ function loadDefinitions()
         }
     }
     
-    loadScript(formDef, checkForAppSetup);
+    loadScript(formDef, checkForAppSetup, loadDefaultForm);
     
     if (brandDef)
     {
-        loadScript(brandDef, checkForAppSetup);
+        loadScript(brandDef, checkForAppSetup, loadDefaultBrand);
     }
     
     if (customizationDef)
     {
-        loadScript(customizationDef, checkForAppSetup);
+        loadScript(customizationDef, checkForAppSetup, loadDefaultCustomization);
     }
     
     if (headerConfig)
     {
-        loadScript(headerConfig, checkForAppSetup);
+        loadScript(headerConfig, checkForAppSetup, loadDefaultHeader);
     }
+}
+
+function loadDefaultForm()
+{
+    var formDef = "./defs/form.json.js";
+    loadScript(formDef, checkForAppSetup);
+}
+
+function loadDefaultBrand()
+{
+    var brandDef = "./defs/brand.json.js";
+    loadScript(brandDef, checkForAppSetup);
+}
+
+function loadDefaultCustomization()
+{
+    var customizationDef = "./defs/customization.json.js";
+    loadScript(customizationDef, checkForAppSetup);
+}
+
+function loadDefaultHeader()
+{
+    var headerDef = "./defs/header.json.js";
+    loadScript(headerDef, checkForAppSetup);
 }
 
 /**
