@@ -1,6 +1,7 @@
 (
     function ()
     {
+       console.log('started defimp');
         var appDef = "../appcnfs/app.json.js";
         
         // Check if we have an URI paramater which specifies
