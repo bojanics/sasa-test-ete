@@ -58,7 +58,7 @@ var currentUser = {
     var isIfrm = isIframe();
     var isCallback = isADALCallback();
     console.log('isIframe: '+isIfrm+', isADALInitialized: '+isSignedInUser()+', isCallback='+isCallback+', query string: '+query);
-    
+    alert('isIframe: '+isIfrm+', isADALInitialized: '+isSignedInUser()+', isCallback='+isCallback+', query string: '+query+', cl='+adal_clientId);
     // check and use ADAL if we have signed in user or we need to initialize it
     // NOTE: ADAL should be used if this is running inside iFrame (it means it is refreshing the ID token), or if we already have signed-in user, 
     // or we are in process of initialization (callback), or if we have the query parameter 'client' or query parameter 'token'
