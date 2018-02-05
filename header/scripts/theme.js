@@ -272,7 +272,11 @@ console.log($('.content-wrapper')[0].style);
         console.log("Style apply 2");
         $('.content-wrapper').show();
         console.log("Style apply 3");
-
+        $('.header-border').trigger('click');        
+        console.log("Style apply 4c");
+        $('.content-wrapper').trigger('click');
+        console.log("Style apply 5c");
+   
         
         /*
         $('.header-border')[0].style.display='none';
