@@ -269,6 +269,7 @@ function showContentOnStyleApply()
         console.log("Style apply 2");
         $('.content-wrapper').show();
         console.log("Style apply 3");
+        /*
         $('.header-border').hide();
         console.log("Style apply 4");
         $('.content-wrapper').hide();
@@ -277,6 +278,15 @@ function showContentOnStyleApply()
         console.log("Style apply 6");
         $('.content-wrapper').show();
         console.log("Style apply 7");
+        */
+        $('#.header-border').hide();
+         setTimeout(function() {
+         $('#.header-border').show();
+        }, 0);
+        $('#content-wrapper').hide();
+         setTimeout(function() {
+         $('#content-wrapper').show();
+        }, 0);
     }
     else
     {
