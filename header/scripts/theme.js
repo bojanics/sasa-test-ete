@@ -279,14 +279,18 @@ function showContentOnStyleApply()
         $('.content-wrapper').show();
         console.log("Style apply 7");
         */
-        $('#.header-border').hide();
+        $('.header-border').hide();
          setTimeout(function() {
-         $('#.header-border').show();
+         $('.header-border').show();
+         console.log("Style apply 6r");
         }, 0);
-        $('#content-wrapper').hide();
+        console.log("Style apply 4");
+        $('.content-wrapper').hide();
          setTimeout(function() {
-         $('#content-wrapper').show();
+         $('.content-wrapper').show();
+         console.log("Style apply 7r");
         }, 0);
+        console.log("Style apply 5");
     }
     else
     {
