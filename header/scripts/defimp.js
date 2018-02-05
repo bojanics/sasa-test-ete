@@ -241,16 +241,19 @@ function checkForAppSetup()
     {
         if (document.readyState === 'complete')
         {
+           console.log('complete setup 1');
             setupApp();
         }
         else
         {
             if(window.addEventListener)
             {
+               console.log('complete setup 2');
                 window.addEventListener('load', setupApp);
             }
             else
             {
+               console.log('complete setup 3');
                 window.attachEvent('onload', setupApp);
             }
         }

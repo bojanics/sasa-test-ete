@@ -255,6 +255,7 @@ function resetTheme()
     setThemeSettings();
 }
 
+var cnt = 1;
 /**
  * Shows content when bootstrap or bootswatch style is loaded and applied to the content
  */
@@ -262,18 +263,17 @@ function showContentOnStyleApply()
 {
     // We added btn class to this element and it will have text-align
     // set to center once bootswatch has been rendered
-    if ($("#renderIndicator").css("text-align") !== "right" && $("#headerRenderIndicator").css("text-align") === "right")
+    if (cnt>55 && $("#renderIndicator").css("text-align") !== "right" && $("#headerRenderIndicator").css("text-align") === "right")
     {
         console.log("Style apply 1");
-        //$('.header-border').show();
-        document.getElementById('header-border').style.display = 'block';        
+        $('.header-border').show();
         console.log("Style apply 2");
-        //$('.content-wrapper').show();
-        document.getElementById('content-wrapper').style.display = 'block';
+        $('.content-wrapper').show();
         console.log("Style apply 3");
     }
     else
     {
+       cnt++;
         setTimeout(showContentOnStyleApply, 50);
         console.log('Not found.');
     }
