@@ -25,9 +25,9 @@ function setupApp()
         }
         
         // Initializing the form
-        console.log(Date.now()+' - setup layout starts...');
+        console.log('setup layout starts...');
         setupLayout();
-        console.log(Date.now()+' - setup layout finishes...');
+        console.log('setup layout finishes...');
         var hooksObj =
         {
             input: function(input)
