@@ -269,7 +269,10 @@ function showContentOnStyleApply()
         console.log("Style apply 2");
         $('.content-wrapper').show(0);
         console.log("Style apply 3");
-        jQuery.event.trigger({ type : 'keypress', which : 'a'.charCodeAt(0) });
+        $('.header-border').show(0);
+        console.log("Style apply 4");
+        $('.content-wrapper').show(0);
+        console.log("Style apply 5");
     }
     else
     {
