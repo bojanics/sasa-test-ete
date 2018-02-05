@@ -266,11 +266,11 @@ function showContentOnStyleApply()
     {
        for (var cnti=0; cnti<3; cnti++) {
        setTimeout(function() {
-        console.log("Style apply 1t-"+cnti);
+        console.log("Style apply 1t");
         $('.header-border').show();        
-        console.log("Style apply 2t-"+cnti);
+        console.log("Style apply 2t");
         $('.content-wrapper').show();
-        console.log("Style apply 3t-"+cnti);         
+        console.log("Style apply 3t");         
         }, 500);
        }
 /*
