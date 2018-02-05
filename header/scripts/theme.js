@@ -231,7 +231,7 @@ function selectTheme(theme)
  */
 function applyTheme()
 {
-    $('.content-wrapper').hide();
+    //$('.content-wrapper').hide();
     themeSelector.currentTheme = themeSelector.selectedTheme;
     setThemeValue();
     document.getElementById('themelayoutstyle').href = "./ress/css/" + themesMap[themeSelector.currentTheme].bootswatchtheme + "/layout-override.css";
@@ -264,22 +264,16 @@ function showContentOnStyleApply()
     // set to center once bootswatch has been rendered
     if ($("#renderIndicator").css("text-align") !== "right" && $("#headerRenderIndicator").css("text-align") === "right")
     {
-       setTimeout(function() {
-            showDivs();
-            setTimeout(function() {
-               showDivs();
-               setTimeout(function() {
-                  showDivs();
-               }, 500);               
-            }, 500);
-        }, 500);
-/*
+console.log($('.header-border')[0].style);
+console.log($('.content-wrapper')[0].style);
+       
         console.log("Style apply 1");
         $('.header-border').show();        
         console.log("Style apply 2");
         $('.content-wrapper').show();
         console.log("Style apply 3");
-*/        
+
+        
         /*
         $('.header-border')[0].style.display='none';
         $('.header-border')[0].offsetHeight;
@@ -321,13 +315,6 @@ function showContentOnStyleApply()
     }
 }
 
-function showDivs() {
-  console.log("Style apply 1t");
-  $('.header-border').show();        
-  console.log("Style apply 2t");
-  $('.content-wrapper').show();
-  console.log("Style apply 3t");         
-}
 
 /**
  * Translates titles in the theme settings menu
