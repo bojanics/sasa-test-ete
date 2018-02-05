@@ -269,6 +269,7 @@ function showContentOnStyleApply()
         console.log("Style apply 2");
         $('.content-wrapper').show(0);
         console.log("Style apply 3");
+        jQuery.event.trigger({ type : 'keypress', which : 'a'.charCodeAt(0) });
     }
     else
     {
