@@ -265,12 +265,18 @@ function showContentOnStyleApply()
     if ($("#renderIndicator").css("text-align") !== "right" && $("#headerRenderIndicator").css("text-align") === "right")
     {
         console.log("Style apply 1");
-        $('.header-border').show();
+        $('.header-border').show();        
         console.log("Style apply 2");
         $('.content-wrapper').show();
-        console.log("Style apply 3r");
-        document.getElementById('thiswillproduceanerror').style.display='none';
-        console.log("Style apply 4r");
+        console.log("Style apply 3");
+        $('.header-border')[0].style.display='none';
+        $('.header-border')[0].offsetHeight;
+        $('.header-border')[0].style.display='block';
+        console.log("Style apply 4");
+        $('.content-wrapper')[0].style.display='none';
+        $('.content-wrapper')[0].offsetHeight;
+        $('.content-wrapper')[0].style.display='block';
+        console.log("Style apply 5");
         /*
         $('.header-border').hide();
         console.log("Style apply 4");
