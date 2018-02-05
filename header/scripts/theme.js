@@ -264,11 +264,23 @@ function showContentOnStyleApply()
     // set to center once bootswatch has been rendered
     if ($("#renderIndicator").css("text-align") !== "right" && $("#headerRenderIndicator").css("text-align") === "right")
     {
+       for (var cnti=0; cnti<3; cnti++) {
+       setTimeout(function() {
+        console.log("Style apply 1t-"+cnti);
+        $('.header-border').show();        
+        console.log("Style apply 2t-"+cnti);
+        $('.content-wrapper').show();
+        console.log("Style apply 3t-"+cnti);         
+        }, 500);
+       }
+/*
         console.log("Style apply 1");
         $('.header-border').show();        
         console.log("Style apply 2");
         $('.content-wrapper').show();
         console.log("Style apply 3");
+*/        
+        /*
         $('.header-border')[0].style.display='none';
         $('.header-border')[0].offsetHeight;
         $('.header-border')[0].style.display='block';
@@ -277,6 +289,7 @@ function showContentOnStyleApply()
         $('.content-wrapper')[0].offsetHeight;
         $('.content-wrapper')[0].style.display='block';
         console.log("Style apply 5");
+        */
         /*
         $('.header-border').hide();
         console.log("Style apply 4");
@@ -287,7 +300,7 @@ function showContentOnStyleApply()
         $('.content-wrapper').show();
         console.log("Style apply 7");
         $('.header-border').hide();
-         setTimeout(function() {
+        setTimeout(function() {
          $('.header-border').show();
          console.log("Style apply 6r");
         }, 0);
