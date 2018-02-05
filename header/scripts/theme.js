@@ -264,12 +264,16 @@ function showContentOnStyleApply()
     // set to center once bootswatch has been rendered
     if ($("#renderIndicator").css("text-align") !== "right" && $("#headerRenderIndicator").css("text-align") === "right")
     {
+        console.log("Style apply 1");
         $('.header-border').show();
+        console.log("Style apply 2");
         $('.content-wrapper').show();
+        console.log("Style apply 3");
     }
     else
     {
         setTimeout(showContentOnStyleApply, 50);
+        console.log('Not found.');
     }
 }
 
