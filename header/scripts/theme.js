@@ -272,11 +272,18 @@ console.log($('.content-wrapper')[0].style);
         console.log("Style apply 2");
         $('.content-wrapper').show();
         console.log("Style apply 3");
+        var hbstr = $('.header-border').html();
+        var cwstr = $('.content-wrapper').html();
+        $('.header-border').html(hbstr);
+        $('.content-wrapper').html(cwstr);
+console.log('opa');     
+     
+        /*
         $('.header-border').trigger('click');        
         console.log("Style apply 4c");
         $('.content-wrapper').trigger('click');
         console.log("Style apply 5c");
-   
+   */
         
         /*
         $('.header-border')[0].style.display='none';
