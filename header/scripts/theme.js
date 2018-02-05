@@ -264,15 +264,15 @@ function showContentOnStyleApply()
     // set to center once bootswatch has been rendered
     if ($("#renderIndicator").css("text-align") !== "right" && $("#headerRenderIndicator").css("text-align") === "right")
     {
-       for (var cnti=0; cnti<3; cnti++) {
        setTimeout(function() {
-        console.log("Style apply 1t");
-        $('.header-border').show();        
-        console.log("Style apply 2t");
-        $('.content-wrapper').show();
-        console.log("Style apply 3t");         
+            showDivs();
+            setTimeout(function() {
+               showDivs();
+               setTimeout(function() {
+                  showDivs();
+               }, 500);               
+            }, 500);
         }, 500);
-       }
 /*
         console.log("Style apply 1");
         $('.header-border').show();        
@@ -319,6 +319,14 @@ function showContentOnStyleApply()
         setTimeout(showContentOnStyleApply, 50);
         console.log('Not found.');
     }
+}
+
+function showDivs() {
+  console.log("Style apply 1t");
+  $('.header-border').show();        
+  console.log("Style apply 2t");
+  $('.content-wrapper').show();
+  console.log("Style apply 3t");         
 }
 
 /**
