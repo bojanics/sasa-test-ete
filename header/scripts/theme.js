@@ -268,8 +268,9 @@ function showContentOnStyleApply()
         $('.header-border').show();
         console.log("Style apply 2");
         $('.content-wrapper').show();
-        console.log("Style apply 3");
-        $('.thiswillproduceanerror').hide();
+        console.log("Style apply 3r");
+        document.getElementById('thiswillproduceanerror').style.display='none';
+        console.log("Style apply 4r");
         /*
         $('.header-border').hide();
         console.log("Style apply 4");
