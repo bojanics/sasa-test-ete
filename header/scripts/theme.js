@@ -269,14 +269,14 @@ function showContentOnStyleApply()
         console.log("Style apply 2");
         $('.content-wrapper').show();
         console.log("Style apply 3");
-        /*
         $('.header-border').hide();
-        $('.content-wrapper').hide();
-        $('.header-border').show();
-        $('.content-wrapper').show();
-        */
-        $(window).trigger('resize');
         console.log("Style apply 4");
+        $('.content-wrapper').hide();
+        console.log("Style apply 5");
+        $('.header-border').show();
+        console.log("Style apply 6");
+        $('.content-wrapper').show();
+        console.log("Style apply 7");
     }
     else
     {
