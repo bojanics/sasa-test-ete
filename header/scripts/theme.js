@@ -342,8 +342,8 @@ console.log('opa');
         console.log('Not found.');
     }
 */    
-showdivs();
-//setTimeout(showdivs, 200);
+//showdivs();
+setTimeout(showdivs, 200);
 console.log('sync.');
    } else {
       console.log('nije sync jos.');
