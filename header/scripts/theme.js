@@ -361,7 +361,7 @@ function showdivs () {
 }
 
 function showdivswithtimeout () {
-   if ($("#renderIndicator").css("text-align") !== "right" && $("#headerRenderIndicator").css("text-align") === "right")
+   if ($("#renderIndicator").css("text-align") !== "right" && $("#headerRenderIndicator").css("text-align") === "right") {
       showdivs();
       console.log('divs shown');
    } else {
@@ -369,6 +369,7 @@ function showdivswithtimeout () {
       console.log('not fnd');
    }
 }
+
 //    {
 /**
  * Translates titles in the theme settings menu
