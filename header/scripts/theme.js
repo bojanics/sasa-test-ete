@@ -152,7 +152,7 @@ function setupStyle(overrideBrandTheme)
     bootswatchStyleDE.rel = "stylesheet";
     
     // We should show the form after new styles has been loaded to prevent FOUC
-    bootswatchStyleDE.onload = showContentOnStyleApply();
+    bootswatchStyleDE.onload = sc1();//showContentOnStyleApply();
     if (!overrideBrandTheme && typeof brandObj !== 'undefined' && brandObj["bootswatchtheme"])
     {
         themeSelector.currentTheme = brandObj["bootswatchtheme"];
@@ -168,6 +168,7 @@ function setupStyle(overrideBrandTheme)
     var headerStyleDE = document.createElement("link");
     headerStyleDE.id = "themelayoutstyle";
     headerStyleDE.rel = "stylesheet";
+    headerStyleDE.onload = sc2();
     headerStyleDE.href = "./ress/css/" + themesMap[themeSelector.currentTheme].bootswatchtheme + "/layout-override.css";
     layoutStyleNode.parentNode.insertBefore(headerStyleDE, layoutStyleNode.nextSibling);
 }
@@ -255,15 +256,29 @@ function resetTheme()
     setThemeSettings();
 }
 
+var scl1 = false;
+function sc1() {
+   scl1 = true;
+   showContentOnStyleApply();
+}
+
+var scl2 = false;
+function sc2() {
+   scl2 = true;
+   showContentOnStyleApply();
+}
+
 /**
  * Shows content when bootstrap or bootswatch style is loaded and applied to the content
  */
 function showContentOnStyleApply()
 {
+   if (scl1 && scl2) {
     // We added btn class to this element and it will have text-align
     // set to center once bootswatch has been rendered
 //    if ($("#renderIndicator").css("text-align") !== "right" && $("#headerRenderIndicator").css("text-align") === "right")
 //    {
+/*   
 console.log($('.header-border')[0].style);
 console.log($('.content-wrapper')[0].style);
        
@@ -272,7 +287,7 @@ console.log($('.content-wrapper')[0].style);
         console.log("Style apply 2");
         $('.content-wrapper').show();
         console.log("Style apply 3");
-        
+*/        
         /*
         var hbstr = $('.header-border').html();
         var cwstr = $('.content-wrapper').html();
@@ -327,9 +342,23 @@ console.log('opa');
         console.log('Not found.');
     }
 */    
-console.log('oma.');
+showdivs();
+//setTimeout(showdivs, 200);
+console.log('sync.');
+   } else {
+      console.log('nije sync jos.');
+   }
 }
 
+function showdivs () {
+   console.log($('.header-border')[0].style);
+   console.log($('.content-wrapper')[0].style);       
+   console.log("Style apply 1");
+   $('.header-border').show();        
+   console.log("Style apply 2");
+   $('.content-wrapper').show();
+   console.log("Style apply 3");
+}
 
 /**
  * Translates titles in the theme settings menu
