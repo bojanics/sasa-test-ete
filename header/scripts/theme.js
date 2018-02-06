@@ -343,7 +343,7 @@ console.log('opa');
     }
 */    
 //showdivs();
-setTimeout(showdivs, 200);
+showdivswithtimeout();
 console.log('sync.');
    } else {
       console.log('nije sync jos.');
@@ -360,6 +360,16 @@ function showdivs () {
    console.log("Style apply 3");
 }
 
+function showdivswithtimeout () {
+   if ($("#renderIndicator").css("text-align") !== "right" && $("#headerRenderIndicator").css("text-align") === "right")
+      showdivs();
+      console.log('divs shown');
+   } else {
+      setTimeout(showdivswithtimeout, 50);
+      console.log('not fnd');
+   }
+}
+//    {
 /**
  * Translates titles in the theme settings menu
  */
