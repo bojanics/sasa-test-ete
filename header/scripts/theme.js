@@ -351,8 +351,8 @@ console.log('sync.');
 }
 
 function showdivs () {
-   //console.log('hide spinner');
-   //$('#mainSpinner').hide();
+   console.log('hide spinner');
+   $('#mainSpinner').hide();
 
    console.log($('.header-border')[0].style);
    console.log($('.content-wrapper')[0].style);       
