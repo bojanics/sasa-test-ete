@@ -39,8 +39,8 @@ var currentUser = {
                adal_clientId = parsedToken.aud;
                adal_tenant = parsedToken.tid;
                var newq = query.replace('token='+token,'client='+adal_clientId+'&tenant='+adal_tenant);
-               alert('wl='+[window.location.protocol, '//', window.location.host, window.location.pathname].join('')+'?'+newq);
-               //window.location=
+               var firstredir=[window.location.protocol, '//', window.location.host, window.location.pathname].join('')+'?'+newq;
+               window.location.href=firstredir;
                } catch(e) {
                   console.log('Invalid token parameter: '+token);
                }
