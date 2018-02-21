@@ -38,7 +38,8 @@ var currentUser = {
                var parsedToken = parseJwt(token);
                adal_clientId = parsedToken.aud;
                adal_tenant = parsedToken.tid;
-               alert('wl='+[window.location.protocol, '//', window.location.host, window.location.pathname].join(''));
+               var newq = query.replace('token='+token,'client='+adal_clientId+'&tenant='+adal_tenant);
+               alert('wl='+[window.location.protocol, '//', window.location.host, window.location.pathname].join('')+'?'+newq);
                //window.location=
                } catch(e) {
                   console.log('Invalid token parameter: '+token);
