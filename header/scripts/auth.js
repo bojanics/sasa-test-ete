@@ -28,6 +28,11 @@ var currentUser = {
     var query = window.location.search.substring(1);
     var qs = '{}';
     var storageObj = isIEBrowser() ? localStorage : sessionStorage;
+    var logmsg = storageObj.getItem('logmsg');
+    if (!logmsg) {
+       logmsg = "";
+    }
+
     if (query!=null && query!='') {
         qs = parse_query_string(query);
         adal_clientId = qs['client'];
@@ -41,6 +46,7 @@ var currentUser = {
                var newq = query.replace('token='+token,'client='+adal_clientId+'&tenant='+adal_tenant);
                var firstredir=[window.location.protocol, '//', window.location.host, window.location.pathname].join('')+'?'+newq;
                window.location.href=firstredir;
+               return;
                } catch(e) {
                   console.log('Invalid token parameter: '+token);
                }
@@ -67,6 +73,7 @@ var currentUser = {
     // or we are in process of initialization (callback), or if we have the query parameter 'client' or query parameter 'token'
     var shouldUseADAL = isIfrm || isSignedInUser() || isCallback || adal_clientId!=null;
     console.log('should use ADAL: '+shouldUseADAL);
+    //console.log('msgbeforeinit='+logmsg);
     if (shouldUseADAL) {
          if (ADAL==null) {
             ADAL = new AuthenticationContext({
@@ -80,23 +87,37 @@ var currentUser = {
             });   
          }
           
-       
+         logmsg = logmsg+'BEFISCALLB: user is '+(ADAL.getCachedUser() ? JSON.stringify(ADAL.getCachedUser()):'unknown')+', ic='+isCallback+', idt='+storageObj.getItem('adal.idtoken')+'\n';
+         //storageObj.setItem('logmsg',logmsg);        
         // doing ADAL logic
         console.log('iscallback='+isCallback);
+        //console.log('msginit='+logmsg);
         if (isCallback) {
             ADAL.handleWindowCallback();	
         }
-        
+        logmsg = logmsg+'BEFISCALLB2: user is '+(ADAL.getCachedUser() ? JSON.stringify(ADAL.getCachedUser()):'unknown')+', ic='+isCallback+', idt='+storageObj.getItem('adal.idtoken')+'\n';
+        //storageObj.setItem('logmsg',logmsg);        
+        //console.log('msg1='+logmsg);
         if (isCallback && !ADAL.getLoginError()) {
             console.log('Now redirecting to original URL');
             window.location = ADAL._getItem(ADAL.CONSTANTS.STORAGE.LOGIN_REQUEST);
+            //console.log('msg2='+logmsg);
             return;
         }	
         
+        logmsg = logmsg+'BEFISCACHEDUSER: user is '+(ADAL.getCachedUser() ? JSON.stringify(ADAL.getCachedUser()):'unknown')+', ic='+isCallback+', idt='+storageObj.getItem('adal.idtoken')+'\n';
+        //storageObj.setItem('logmsg',logmsg);        
         if (!ADAL.getCachedUser()) {
             console.log('handling signin...');
             ADAL.login();
+            logmsg = logmsg+'AFTERLOGIN: user is '+(ADAL.getCachedUser() ? JSON.stringify(ADAL.getCachedUser()):'unknown')+', ic='+isCallback+', idt='+storageObj.getItem('adal.idtoken')+'\n';
+            //storageObj.setItem('logmsg',logmsg);        
+            //console.log('msg3='+logmsg);
             return;
+        } else {
+            logmsg = logmsg+'HASCACHEDUSER: user is '+(ADAL.getCachedUser() ? JSON.stringify(ADAL.getCachedUser()):'unknown')+', ic='+isCallback+', idt='+storageObj.getItem('adal.idtoken')+'\n';           
+            //storageObj.setItem('logmsg',logmsg);        
+            //console.log('msg4='+logmsg);
         }
     }    
 })();
