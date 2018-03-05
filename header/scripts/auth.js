@@ -40,13 +40,13 @@ var currentUser = {
            var token = qs['token'];
            if (token) {
                try {
-               var parsedToken = parseJwt(token);
-               adal_clientId = parsedToken.aud;
-               adal_tenant = parsedToken.tid;
-               var newq = query.replace('token='+token,'client='+adal_clientId+'&tenant='+adal_tenant);
-               var firstredir=[window.location.protocol, '//', window.location.host, window.location.pathname].join('')+'?'+newq;
-               window.location.href=firstredir;
-               return;
+                  var parsedToken = parseJwt(token);
+                  adal_clientId = parsedToken.aud;
+                  adal_tenant = parsedToken.tid;
+                  var newq = query.replace('token='+token,'client='+adal_clientId+'&tenant='+adal_tenant);
+                  var firstredir=[window.location.protocol, '//', window.location.host, window.location.pathname].join('')+'?'+newq;
+                  window.location.href=firstredir;
+                  return;
                } catch(e) {
                   console.log('Invalid token parameter: '+token);
                }
